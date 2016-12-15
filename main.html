@@ -1,0 +1,47 @@
+ <html>
+  <head>
+    <link rel="stylesheet" type="text/css" href="main.css">
+    <script type="text/javascript" src="js/objs.js"></script>
+    <script type="text/javascript" src="js/input.js"></script>
+    <script type="text/javascript">
+    var player1, autoTimer, dt;
+    var fps = 1000 / 50;
+    var prevTime = 0;
+    var curTime = performance.now();
+    function startGame() {
+      console.info("Starting")
+      player1 = new GamePiece(playerProps({height:50,width:50,speed:2,color:"darkred"}));
+      coin = new GamePiece({height:10,width:10,image:new Image({src:"images/coin.png"})})
+      myGameArea.start();
+    }
+    var myGameArea = {
+      canvas : document.createElement("canvas"),
+      start : function() {
+        this.canvas.width = 960;
+        this.canvas.height = 520;
+        this.context = this.canvas.getContext("2d");
+        document.body.insertBefore(this.canvas, document.body.childNodes[0]);
+        prevTime = curTime;
+        curTime = performance.now();
+        dt = curTime-prevTime>0.15?0.15:curTime-prevTime;
+        getArrow();
+        goToDoubleClick();
+        updateGameArea();
+        console.info("Game Loaded")
+      },
+      clear : function() {
+        this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
+      }
+    }
+    function updateGameArea() {
+      myGameArea.clear();
+      player1.update();
+      player1.draw();
+      //coin.update();
+      //coin.render();
+    }
+    </script>
+  </head>
+  <body onload="startGame()">
+  </body>
+ </html>
